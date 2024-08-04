@@ -1,24 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Footer from "./components/Footer";
+import Dashboard from "./components/Home";
+import Navbar from "./components/Navbar";
+import BackgroundC from "./components/background";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Cookies from 'js-cookie';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
+  const [loggedStatus, setLoggedStatus] = useState(true);
+  const [currentAccount, setCurrentAccount] = useState(false);
+
+  const [colors, setColors] = useState([]);
+
+  const [fontsized, setfontsized] = useState(10);
+
+  useEffect(() => {
+    let cookieValue = Cookies.get('userstatus');
+    if(cookieValue){
+      setLoggedStatus(true)
+    }else{
+      setLoggedStatus(false)
+    }
+   
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Navbar setLoggedStatus={setLoggedStatus} setColors={setColors} setfontsized={setfontsized} loggedStatus={loggedStatus} setCurrentAccount={setCurrentAccount} />
+      <Routes>
+        {loggedStatus ? (
+          <>
+          <Route
+            exact
+            path="/"
+            element={<Dashboard colors={colors} fontsized={fontsized}></Dashboard>}
+          />
+          </>
+        ) : (
+          <>
+            <Route exact path="/" element={<BackgroundC />} />
+            <Route path="*" element={<BackgroundC />} />
+          </>
+        )}
+      </Routes>
+      <Footer />
+      <ToastContainer />
+    </Router>
   );
 }
 
