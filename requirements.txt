@@ -1,0 +1,8 @@
+1. npm- node package manager
+2. react js
+3. Python - machine learning modal
+4. login and register and user data store  - firebase
+5. 
+
+
+1. node js
